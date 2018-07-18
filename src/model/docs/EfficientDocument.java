@@ -33,23 +33,13 @@ public class EfficientDocument extends Document {
         this.numWords = 0;
         this.numSentences = 0;
         this.numSyllables = 0;
-        this.tokens = getTokens("[!?.]+[a-zA-Z]+");
+        this.tokens = getTokens("[a-zA-Z]+[.?!]*");
         for(String token : tokens) {
-            if(isWord(token)) 
-                this.numWords++;
-            else 
+            this.numWords++;
+            if(isSentenceEndingWord(token))
                 this.numSentences++;
             this.numSyllables += countSyllables(token);
         }
-    }
-
-    /** Returns whether a token is a word or an end of punctuation token
-	 * 
-	 * @param token to check if word
-     * @return true if word, false if end of punctuation token
-	 */
-    private boolean isWord(String token) {
-        return (!(token.indexOf('!') >= 0 || (token.indexOf('.') >= 0) || (token.indexOf('?') >= 0)));
     }
 
     /** Return the number of words in this document */
@@ -68,8 +58,8 @@ public class EfficientDocument extends Document {
     }
 
     /** Return a list of words in this document */
-    public List<String> getAllWords() {
-        List<String> words = new List<String>(this.tokens);
+    public List<String> getWords() {
+        List<String> words = new ArrayList<String>(this.tokens);
         return words;
     }
 }

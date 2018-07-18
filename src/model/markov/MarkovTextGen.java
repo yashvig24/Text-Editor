@@ -33,15 +33,16 @@ public class MarkovTextGen implements TextGen {
     /** Train the generator by adding the sourceText */
     public void train(String input) {
         Document doc = new EfficientDocument(input);
-        List<String> allWords = doc.getAllWords();
+        List<String> allWords = doc.getWords();
         // add first word into start words
-        this.startWords.add(allWords.get(0));
+        if(allWords.size() > 0)
+            this.startWords.add(allWords.get(0));
 
         for(int i = 0; i < allWords.size() - 1; i++) {
             String word = allWords.get(i);
             String nextWord = allWords.get(i+1);
             // check if it is a sentence ending word
-            if(!doc.isWord(word)) {
+            if(doc.isSentenceEndingWord(word)) {
                 // if yes, next word should be a sentence starting word
                 this.startWords.add(nextWord);
             }
@@ -64,7 +65,7 @@ public class MarkovTextGen implements TextGen {
 
     /** Generate the text with the specified number of words */
     public String generate(int numWords) {
-        String result;
+        String result = "";
         Random r = new Random();
 
         // get a random starting word form list of starting words

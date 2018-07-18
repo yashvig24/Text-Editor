@@ -1,6 +1,7 @@
 package model.docs;
 
 import java.util.List;
+import java.io.File;
 
 public class BasicDocument extends Document {
 
@@ -10,6 +11,10 @@ public class BasicDocument extends Document {
 	 */
     public BasicDocument(String text) {
         super(text);
+    }
+
+    public BasicDocument(File file) {
+        super(file);
     }
 
     /** Return the number of words in this document */
@@ -22,7 +27,7 @@ public class BasicDocument extends Document {
 	 * @return List of all tokens in document
 	 */
     public List<String> getWords() {
-        String pattern = "\\S+";
+        String pattern = "[a-zA-Z]+[.?!]*";
         return getTokens(pattern);
     }
 

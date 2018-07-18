@@ -8,6 +8,7 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.io.File;
 import java.util.Scanner;
+import java.io.IOException;
 
 /*
 * A class that represents a text document
@@ -28,10 +29,22 @@ public abstract class Document {
 
     public Document(File file) {
         this.text = "";
-        Scanner s = new Scanner(file);
-        while(s.hasNextLine()) {
-            this.text += s.nextLine();
+        try {
+            Scanner s = new Scanner(file);
+            while(s.hasNextLine()) {
+                this.text += s.nextLine() + "\n";
+            }
         }
+        catch(IOException e) {}
+    }
+
+    /** Returns whether a token is a word or an end of punctuation token
+	 * 
+	 * @param token to check if word
+     * @return true if word, false if end of punctuation token
+	 */
+    public boolean isSentenceEndingWord(String token) {
+        return !(!(token.indexOf('!') >= 0 || (token.indexOf('.') >= 0) || (token.indexOf('?') >= 0)));
     }
 
     /** 

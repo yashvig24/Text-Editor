@@ -3,10 +3,14 @@ package test;
 import java.io.File;
 import model.docs.*;
 import model.markov.*;
+import java.io.IOException;
+import model.bst.*;
+import model.dict.TrieDictionary;
+import model.trie.*;
 
 public class Test {
     public static void main(String args[]) {
-        testMarkov();
+        testDictionary();
     }
 
     private static void testGetNumWords() {
@@ -47,12 +51,39 @@ public class Test {
         System.out.println(passed);
     }
 
-    public static void testMarkov() {
+    private static void testMarkov() throws IOException {
         TextGen gen = new MarkovTextGen();
-        String path = "Users/legend/Documents/myTextEditor/data/lyrics.txt";
+        String path = "/Users/legend/Documents/myTextEditor/data/lyric.txt";
         Document lyricDoc = new BasicDocument(new File(path));
         String lyrics = lyricDoc.getText();
         gen.train(lyrics);
-        System.out.println(gen.generate(5));
+        System.out.println(gen.generate(50));
+    }
+
+    private static void testTrie() {
+        Trie t = new Trie();
+        t.add("a");
+        t.add("at");
+        t.add("ate");
+        t.add("basket");
+        t.add("yellow");
+        System.out.println(t.contains("a"));
+        System.out.println(t.contains("basket"));
+        System.out.println(t.contains("at"));
+        System.out.println(t.contains("ate"));
+        System.out.println(t.contains("yellow"));
+        System.out.println(t.contains("Yellow"));
+    }
+
+    private static void testDictionary() {
+        TrieDictionary dict = new TrieDictionary();
+        dict.addWord("a");
+        dict.addWord("ate");
+        dict.addWord("at");
+        dict.addWord("as");
+        dict.addWord("ass");
+        dict.addWord("an");
+        dict.addWord("ant");
+        System.out.println(dict.autoCompleteSuggest("a", 4));
     }
 }
